@@ -12,15 +12,15 @@ Requirements: php5+ compiled with --enable-shmop
 
 */
 
-// These settings would read an mjpeg stream from http://192.168.1.1:80/videostream.cgi?user=admin&password=pass
-$host = "192.168.1.1";
-$port = "80";
-$url = "/videostream.cgi?user=admin&password=pass";
+// These settings would read an mjpeg stream from mjpg-streamer on localhost via reverse ssh tunnel
+$host = "127.0.0.1";
+$port = "17125";
+$url = "/?action=stream";
 
 // Image settings:
 $overlay = "bannerad.png";	//image that will be superimposed onto the stream
 $fallback = "webcam.jpg";	//image that will get updated every 20 frames or so for browsers that don't support mjpeg streams
-$boundary = "IPCamera_Logo";	
+$boundary = "boundarydonotcross";	
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Stuff below here will break things if edited. Avert your eyes unless you know what you are doing
