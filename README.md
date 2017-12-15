@@ -9,9 +9,14 @@ Enjoy!
 Questions? Contact us via http://webmad.co.nz
 
 Installation: 
- - edit index.php, and modify the camera IP address, port, and url to the mjpeg stream.
+
+Requires php-gd (graphic goodies)
+sudo yum install php-gd
+sudo apachectl restart
+
+ - edit stream.php, and modify the camera IP address, port, and url to the mjpeg stream.
  - Modify any of the image settings - ie overlay image and fallback image locations. Note - if you don't want an overlay image, use a fully transparent png, or edit the code to remove this functionality yourself.
- - modify the mjpeg boundary text - this varies between different model cameras. Studying the raw headers of your mjpeg stream from the camera, or the content of the stream to find frame boundary text.
+ - modify the mjpeg boundary text - this varies between different model cameras. Studying the raw headers of your mjpeg stream from the camera, or the content of the stream to find frame boundary text. For the logitech c920 streamed via mjpg-streamer this is 'boundarydonotcross'
 
 Usage:
 ```
