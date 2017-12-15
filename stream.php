@@ -105,8 +105,12 @@ function fresh(){
 	
 	$fp = @fsockopen($host, $port, $errno, $errstr, 10);
 	if($fp){
-		$out = "GET $url HTTP/1.1\r\n";
+	    $username = "xxxxxxxx";
+            $password = "yyyyy";
+            $auth=base64_encode($username.":".$password);
+	    $out = "GET $url HTTP/1.1\r\n";
 	    $out .= "Host: $host\r\n";
+	    $out .= "Authorization: Basic $auth\r\n";
 	    $out .= "\r\n";
 	    fwrite($fp, $out);
 	    $ec = "";
