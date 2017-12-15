@@ -9,12 +9,13 @@ Author URI: http://www.webmad.co.nz
 Usage: <img src="stream.php" />
 Notes: If you are keen to have image overlays clickable, use html elements overlaying the <img> element (ie: wrap <img> in a <div> with position:relative; and add an <a> element with display:block;position:absolute;bottom:0px;left:0px;width:100%;height:15px;background:transparent;z-index:2;)
 Requirements: php5+ compiled with --enable-shmop
+	      php-gd (sudo yum install php-gd)
 
 */
 
-// These settings would read an mjpeg stream from mjpg-streamer on localhost via reverse ssh tunnel
+// These settings would read an mjpeg stream from mjpg-streamer on localhost 
 $host = "127.0.0.1";
-$port = "17125";
+$port = "aportnumber";
 $url = "/?action=stream";
 
 // Image settings:
