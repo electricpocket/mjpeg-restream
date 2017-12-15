@@ -77,13 +77,13 @@ function output($in){
 	global $in2;
 	$string = date('r')."";
 	imagecopy($in,$in2,0,0,0,0,640,480);
-	$font = 1;
+	$font = 4;
 	$width = imagefontwidth($font) * strlen($string) ;
 	$height = imagefontheight($font)+30 ;
 	$x = imagesx($in) - $width ;
 	$y = imagesy($in) - $height;
 	$backgroundColor = imagecolorallocate ($in, 255, 255, 255);
-	$textColor = imagecolorallocate ($in, 0, 0,0);
+	$textColor = imagecolorallocate ($in, 255, 255, 255);
 	imagestring ($in, $font, $x, $y,  $string, $textColor);
 	imagejpeg($in,NULL,60);
 }
