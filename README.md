@@ -11,8 +11,10 @@ Questions? Contact us via http://webmad.co.nz
 Installation: 
 
 Requires php-gd (graphic goodies)
-sudo yum install php-gd
-sudo apachectl restart
+
+-sudo yum install php-gd
+
+-sudo apachectl restart
 
  - edit stream.php, and modify the camera IP address, port, and url to the mjpeg stream.
  - Modify any of the image settings - ie overlay image and fallback image locations. Note - if you don't want an overlay image, use a fully transparent png, or edit the code to remove this functionality yourself.
