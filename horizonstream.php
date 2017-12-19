@@ -75,36 +75,41 @@ exit;
 
 
 function output($in){
-        global $in2;
+	global $in2;
         //read in the pitch and roll measurements
-        $attitude_json=file_get_contents('../sensors/attitude.json');
-        //roll and pitch are in degrees
-        //{"pitch":"20.0","roll":"-7.0"}
-        $attitude=json_decode($attitude_json,true);
-        $string = date('r')." ,pitch:".$attitude['pitch'].",roll:".$attitude['roll'];
-        imagecopy($in,$in2,0,0,0,0,640,480);
+	$attitude_json=file_get_contents('../sensors/attitude.json');
+	//roll and pitch are in degrees
+	//{"pitch":"20.0","roll":"-7.0"}
+	$attitude=json_decode($attitude_json,true);
+	$string = date('r')." ,pitch:".$attitude['pitch'].",roll:".$attitude['roll'];
+	imagecopy($in,$in2,0,0,0,0,640,480);
         //imageantialias($in,true); //requires php 7.2
-        $font = 4;
-        $width = imagefontwidth($font) * strlen($string) ;
-        $height = imagefontheight($font)+30 ;
-        $x = imagesx($in) - $width ;
-        $y = imagesy($in) - $height;
-        $backgroundColor = imagecolorallocate ($in, 255, 255, 255);
-        $textColor = imagecolorallocate ($in, 255, 255, 255);
+	$font = 4;
+	$width = imagefontwidth($font) * strlen($string) ;
+	$height = imagefontheight($font)+30 ;
+	$x = imagesx($in) - $width ;
+	$y = imagesy($in) - $height;
+	$backgroundColor = imagecolorallocate ($in, 255, 255, 255);
+	$textColor = imagecolorallocate ($in, 255, 255, 255);
         imagestring ($in, $font, $x, $y,  $string, $textColor);
 
-        $x1=0;
-        $x2 = imagesx($in);
-        $dY= ($x2/2.0)*tan(deg2rad($attitude['roll']));
-        $y1=imagesy($in)/2.0 + $dY;
-        $y2=imagesy($in)/2.0 - $dY;
-        imageline ( $in , $x1 , $y1 , $x2 ,  $y2 ,  $textColor );
+	$x1=0;
+	$x2 = imagesx($in);
+	$dY= ($x2/2.0)*tan(deg2rad($attitude['roll']));
+        //http://therandomlab.blogspot.co.uk/2013/03/logitech-c920-and-c910-fields-of-view.html
+	//VFOV for the logitech is 43 degrees for 16:9 aspect ratio
+	$y0=imagesy($in)/2.0;
+	$dy0=($attitude['pitch']/43.3)*$y0;
+	$y1=$y0 + $dy0 + $dY;
+	$y2=$y0 + $dy0 - $dY;
+	$lineColor = imagecolorallocate ($in, 255, 0, 0);
+	imageline ( $in , $x1 , $y1 , $x2 ,  $y2 ,  $lineColor );
 
-        imagejpeg($in,NULL,60);
+	imagejpeg($in,NULL,60);
 }
 
 function fresh(){
-	global $data,$tmid,$tdmid,$start,$in2,$host,$port,$url,$boundary,$fallback;
+	global $data,$tmid,$tdmid,$start,$in2,$host,$port,$url,$boundary,$fallback,$timelimit;
 	
 	if(!headers_sent()){
 		header('Accept-Range: bytes');
@@ -119,6 +124,7 @@ function fresh(){
 	shmop_write($tmid, str_pad(serialize($data),1024,' '), 0);
 	
 	$fp = @fsockopen($host, $port, $errno, $errstr, 10);
+//error_log(date('Y-m-d H:i:s')." stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, 'streamerror.log');
 	if($fp){
 	    $username = "fleetrange";
             $password = "7125";
