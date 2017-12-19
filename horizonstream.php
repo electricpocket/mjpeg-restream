@@ -23,6 +23,8 @@ $overlay = "bannerad.png";	//image that will be superimposed onto the stream
 $fallback = "webcam.jpg";	//image that will get updated every 20 frames or so for browsers that don't support mjpeg streams
 $boundary = "boundarydonotcross";	
 $timelimit = 300; //number of seconds to run for
+$cameraOffset=0; //horizontal angle camera is pointing
+$cameraUpsideDown=false; //is the camera mounted upside down
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Stuff below here will break things if edited. Avert your eyes unless you know what you are doing
 // (or can make it look like you know what you are doing, and won't get naggy if you can't fix it.)
@@ -75,14 +77,20 @@ exit;
 
 
 function output($in){
-	global $in2;
+	global $in2,$cameraOffset,$cameraUpsideDown;
         //read in the pitch and roll measurements
 	$attitude_json=file_get_contents('../sensors/attitude.json');
 	//roll and pitch are in degrees
 	//{"pitch":"20.0","roll":"-7.0"}
 	$attitude=json_decode($attitude_json,true);
+	if ($cameraUpsideDown)
+	{
+		$attitude['pitch']= - $attitude['pitch'];
+		$attitude['roll'] = - $attitude['roll'];
+	}
 	$string = date('r')." ,pitch:".$attitude['pitch'].",roll:".$attitude['roll'];
 	imagecopy($in,$in2,0,0,0,0,640,480);
+	if ($cameraUpsideDown) imageflip($in,IMG_FLIP_BOTH);
         //imageantialias($in,true); //requires php 7.2
 	$font = 4;
 	$width = imagefontwidth($font) * strlen($string) ;
@@ -99,7 +107,8 @@ function output($in){
         //http://therandomlab.blogspot.co.uk/2013/03/logitech-c920-and-c910-fields-of-view.html
 	//VFOV for the logitech is 43 degrees for 16:9 aspect ratio
 	$y0=imagesy($in)/2.0;
-	$dy0=($attitude['pitch']/43.3)*$y0;
+	
+    $dy0=(($attitude['pitch']+$cameraOffset)/43.3)*$y0*2.0;
 	$y1=$y0 + $dy0 + $dY;
 	$y2=$y0 + $dy0 - $dY;
 	$lineColor = imagecolorallocate ($in, 255, 0, 0);
