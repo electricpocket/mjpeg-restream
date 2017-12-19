@@ -95,7 +95,7 @@ function output($in){
 	$font = 4;
 	$width = imagefontwidth($font) * strlen($string) ;
 	$height = imagefontheight($font)+30 ;
-	$x = imagesx($in) - $width ;
+	$x = 0;//imagesx($in) - $width ;
 	$y = imagesy($in) - $height;
 	$backgroundColor = imagecolorallocate ($in, 255, 255, 255);
 	$textColor = imagecolorallocate ($in, 255, 255, 255);
@@ -111,7 +111,7 @@ function output($in){
     $dy0=(($attitude['pitch']+$cameraOffset)/43.3)*$y0*2.0;
 	$y1=$y0 + $dy0 + $dY;
 	$y2=$y0 + $dy0 - $dY;
-	$lineColor = imagecolorallocate ($in, 255, 0, 0);
+	$lineColor = imagecolorallocate ($in, 255, 255, 255);
 	imageline ( $in , $x1 , $y1 , $x2 ,  $y2 ,  $lineColor );
 
 	imagejpeg($in,NULL,60);
