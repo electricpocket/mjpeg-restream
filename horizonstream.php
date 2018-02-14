@@ -137,7 +137,7 @@ function fresh(){
 	if($fp){
 	    $username = "fleetrange";
 	    $password = trim(file_get_contents('../fr_device.html'));
-	    error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." error ".$errstr."\n", 3, 'streamerror.log');
+	    //error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." error ".$errstr."\n", 3, 'streamerror.log');
         
         $auth=base64_encode($username.":".$password);
 	    $out = "GET $url HTTP/1.1\r\n";
