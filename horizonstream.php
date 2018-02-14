@@ -136,8 +136,9 @@ function fresh(){
 //error_log(date('Y-m-d H:i:s')." stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, 'streamerror.log');
 	if($fp){
 	    $username = "fleetrange";
+	    $password = file_get_contents('../fr_device.html');
 	    error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." error ".$errstr."\n", 3, 'streamerror.log');
-        $password = file_get_contents('../fr_device.html');
+        
         $auth=base64_encode($username.":".$password);
 	    $out = "GET $url HTTP/1.1\r\n";
 	    $out .= "Host: $host\r\n";
