@@ -88,17 +88,24 @@ exit;
 
 function output($in){
 	global $in2,$cameraOffset,$cameraUpsideDown;
-        //read in the pitch and roll measurements
-	$attitude_json=file_get_contents('../sensors/attitude.json');
+	$string = date('r');
+       //read in the pitch and roll measurements
+       
+	if ($horizon)
+	{ 
+		$attitude_json=file_get_contents('../sensors/attitude.json');
+	
 	//roll and pitch are in degrees
 	//{"pitch":"20.0","roll":"-7.0"}
-	$attitude=json_decode($attitude_json,true);
-	if ($cameraUpsideDown)
-	{
-		$attitude['pitch']= - $attitude['pitch'];
-		$attitude['roll'] = - $attitude['roll'];
+		$attitude=json_decode($attitude_json,true);
+		if ($cameraUpsideDown)
+		{
+			$attitude['pitch']= - $attitude['pitch'];
+			$attitude['roll'] = - $attitude['roll'];
+		}
+		$string = $string." ,pitch:".$attitude['pitch'].",roll:".$attitude['roll'];
 	}
-	$string = date('r')." ,pitch:".$attitude['pitch'].",roll:".$attitude['roll'];
+		
 	imagecopy($in,$in2,0,0,0,0,640,480);
 	if ($cameraUpsideDown) imageflip($in,IMG_FLIP_BOTH);
         //imageantialias($in,true); //requires php 7.2
