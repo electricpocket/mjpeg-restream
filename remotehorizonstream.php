@@ -26,6 +26,7 @@ if (!isset($_GET['port']))
 $host = "localhost";
 $port = $_GET['port'] + 10000;//"17125";
 $url = "/?action=stream";
+$horizon=false; //draw a horizon line?
 
 // Image settings:
 $overlay = "bannerad.png";	//image that will be superimposed onto the stream
@@ -121,7 +122,7 @@ function output($in){
 	$y1=$y0 + $dy0 + $dY;
 	$y2=$y0 + $dy0 - $dY;
 	$lineColor = imagecolorallocate ($in, 255, 255, 255);
-	imageline ( $in , $x1 , $y1 , $x2 ,  $y2 ,  $lineColor );
+	if ($horizon) imageline ( $in , $x1 , $y1 , $x2 ,  $y2 ,  $lineColor );
 
 	imagejpeg($in,NULL,60);
 }
