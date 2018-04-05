@@ -30,7 +30,7 @@ $horizon=false; //draw a horizon line?
 
 // Image settings:
 $overlay = "frlogo.png";	//image that will be superimposed onto the stream
-$fallback = "webcam.jpg";	//image that will get updated every 20 frames or so for browsers that don't support mjpeg streams
+$fallback = $port."_still.jpg";	//image that will get updated every 20 frames or so for browsers that don't support mjpeg streams
 $boundary = "boundarydonotcross";	
 $timelimit = 300; //number of seconds to run for
 $cameraOffset=0; //horizontal angle camera is pointing
