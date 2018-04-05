@@ -29,7 +29,7 @@ $url = "/?action=stream";
 $horizon=false; //draw a horizon line?
 
 // Image settings:
-$overlay = "bannerad.png";	//image that will be superimposed onto the stream
+$overlay = "frlogo.png";	//image that will be superimposed onto the stream
 $fallback = "webcam.jpg";	//image that will get updated every 20 frames or so for browsers that don't support mjpeg streams
 $boundary = "boundarydonotcross";	
 $timelimit = 300; //number of seconds to run for
