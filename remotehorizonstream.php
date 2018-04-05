@@ -14,8 +14,17 @@ Requirements: php5+ compiled with --enable-shmop
 */
 
 // These settings would read an mjpeg stream from mjpg-streamer on localhost 
+if (!isset($_GET['port']))
+{
+	header("HTTP/1.1 401 Unauthorized"); 
+	header("Status: 401  Unauthorized");
+	error_log(date('Y-m-d H:i:S')."Port number missing "."\n", 3, 'mjpglog.txt');
+	exit();
+
+	
+}
 $host = "localhost";
-$port = "17125";
+$port = $_GET['port'] + 10000;//"17125";
 $url = "/?action=stream";
 
 // Image settings:
