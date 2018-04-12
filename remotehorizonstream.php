@@ -116,7 +116,7 @@ function output($in){
 	$font = 4;
 	$width = imagefontwidth($font) * strlen($string) ;
 	$height = imagefontheight($font)+30 ;
-	$x = 0;//imagesx($in) - $width ;
+	$x = imagesx($in) - $width - 10;
 	$y = imagesy($in) - $height;
 	$backgroundColor = imagecolorallocate ($in, 255, 255, 255);
 	$textColor = imagecolorallocate ($in, 255, 255, 255);
