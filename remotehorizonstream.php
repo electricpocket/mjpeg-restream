@@ -122,7 +122,7 @@ function output($in) {
 	//imageantialias($in,true); //requires php 7.2
 	$font = 4;
 	$width = imagefontwidth($font) * strlen($string);
-	$height = imagefontheight($font) + 30;
+	$height = imagefontheight($font) + 10;
 	$x = imagesx($in) - $width - 10;
 	$y = imagesy($in) - $height;
 	$backgroundColor = imagecolorallocate($in, 255, 255, 255);
@@ -130,7 +130,7 @@ function output($in) {
 	$bg = imagecolorallocate($in, 0, 0, 0);
 	$textColor = imagecolorallocate($in, 255, 255, 255);
 	//Create background
-	imagefilledrectangle($in,  $x, $y, imagesx($in)-10, imagesy($in)-30, $bg);
+	imagefilledrectangle($in,  $x, $y, imagesx($in)-10, imagesy($in)-10, $bg);
 	
 	imagestring($in, $font, $x, $y, $string, $textColor);
 	if ($horizon) {
