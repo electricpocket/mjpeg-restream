@@ -28,6 +28,7 @@ $port = $_GET['port'] + 10000;//"17125";
 $url = "/?action=stream";
 $horizon=false; //draw a horizon line?
 
+
 // Image settings:
 $overlay = "frlogo.png";	//image that will be superimposed onto the stream
 $fallback = $_GET['port']."_still.jpg";	//image that will get updated every 20 frames or so for browsers that don't support mjpeg streams
@@ -36,6 +37,8 @@ $timelimit = 300; //number of seconds to run for
 $cameraOffset=0; //horizontal angle camera is pointing
 $cameraUpsideDown=false; //is the camera mounted upside down
 if ($_GET['port'] == 7124) $cameraUpsideDown=true; //finlandia
+if (isset($_GET['flip']))
+	$cameraUpsideDown=$_GET['flip']>0;
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Stuff below here will break things if edited. Avert your eyes unless you know what you are doing
 // (or can make it look like you know what you are doing, and won't get naggy if you can't fix it.)
