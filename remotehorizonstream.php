@@ -111,12 +111,14 @@ function output($in) {
 				. $attitude['roll'];
 	}
 
-	imagecopy($in, $in2, 0, 0, 0, 0, 640, 480);
+	
 	if ($cameraUpsideDown)
 	{	
 		if (function_exists("imageflip")) imageflip($in, IMG_FLIP_BOTH);
 		else $in=imagerotate($in, 180, 0);
 	}
+	
+	imagecopy($in, $in2, 0, 0, 0, 0, 640, 480);
 	//imageantialias($in,true); //requires php 7.2
 	$font = 4;
 	$width = imagefontwidth($font) * strlen($string);
