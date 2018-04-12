@@ -128,7 +128,7 @@ function output($in) {
 	$backgroundColor = imagecolorallocate($in, 255, 255, 255);
 	// Black background and white text
 	$bg = imagecolorallocate($in, 0, 0, 0);
-	$textColor = imagecolorallocate($im, 255, 255, 255);
+	$textColor = imagecolorallocate($in, 255, 255, 255);
 	imagestring($in, $font, $x, $y, $string, $textColor);
 	if ($horizon) {
 		$x1 = 0;
