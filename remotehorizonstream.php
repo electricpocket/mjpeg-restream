@@ -13,6 +13,12 @@ Requirements: php5+ compiled with --enable-shmop
 
  */
 
+
+if (!ini_get('date.timezone'))
+{
+	date_default_timezone_set('UTC');
+}
+
 // These settings would read an mjpeg stream from mjpg-streamer on localhost 
 if (!isset($_GET['port'])) {
 	header("HTTP/1.1 401 Unauthorized");
@@ -107,7 +113,10 @@ function output($in) {
 
 	imagecopy($in, $in2, 0, 0, 0, 0, 640, 480);
 	if ($cameraUpsideDown)
-		imageflip($in, IMG_FLIP_BOTH);
+	{	
+		if (function_exists("imageflip")) imageflip($in, IMG_FLIP_BOTH);
+		else $in=imagerotate($in, 180, 0);
+	}
 	//imageantialias($in,true); //requires php 7.2
 	$font = 4;
 	$width = imagefontwidth($font) * strlen($string);
