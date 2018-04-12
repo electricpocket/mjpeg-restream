@@ -35,6 +35,7 @@ $boundary = "boundarydonotcross";
 $timelimit = 300; //number of seconds to run for
 $cameraOffset=0; //horizontal angle camera is pointing
 $cameraUpsideDown=false; //is the camera mounted upside down
+if ($_GET['port'] == 7124) $cameraUpsideDown=true; //finlandia
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Stuff below here will break things if edited. Avert your eyes unless you know what you are doing
 // (or can make it look like you know what you are doing, and won't get naggy if you can't fix it.)
