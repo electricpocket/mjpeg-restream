@@ -126,7 +126,7 @@ function output($in) {
 	$x = imagesx($in) - $width - 10;
 	$y = imagesy($in) - $height;
 	$backgroundColor = imagecolorallocate($in, 255, 255, 255);
-	$textColor = imagecolorallocate($in, 255, 255, 255);
+	$textColor = imagecolorallocate($in, 255, 0, 0);
 	imagestring($in, $font, $x, $y, $string, $textColor);
 	if ($horizon) {
 		$x1 = 0;
