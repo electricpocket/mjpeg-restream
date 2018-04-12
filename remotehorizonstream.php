@@ -91,7 +91,7 @@ exit;
 
 
 function output($in){
-	global $in2,$cameraOffset,$cameraUpsideDown;
+	global $in2,$cameraOffset,$cameraUpsideDown,$horizon;
 	$string = date('r');
        //read in the pitch and roll measurements
        
