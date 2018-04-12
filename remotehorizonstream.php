@@ -129,6 +129,9 @@ function output($in) {
 	// Black background and white text
 	$bg = imagecolorallocate($in, 0, 0, 0);
 	$textColor = imagecolorallocate($in, 255, 255, 255);
+	//Create background
+	imagefilledrectangle($in,  $x, $y, imagesx($in)-10, imagesy($in)-30, $bg);
+	
 	imagestring($in, $font, $x, $y, $string, $textColor);
 	if ($horizon) {
 		$x1 = 0;
