@@ -54,8 +54,12 @@ set_time_limit($timelimit);
 $start = time();
 $in2 = imageCreateFromPNG($overlay);
 
-$tmid = shmop_open(0xff4, 'c', 0777, 1024);
-$tdmid = shmop_open(0xff6, 'c', 0777, 102400);
+//create different shared memory for each camera
+$tmid = shmop_open($_GET['port'], 'c', 0777, 1024);
+$tdmid = shmop_open($port, 'c', 0777, 102400);
+//$tmid = shmop_open(0xff4, 'c', 0777, 1024);
+//$tdmid = shmop_open(0xff6, 'c', 0777, 102400);
+
 
 $data = unserialize(trim(shmop_read($tmid, 0, 1024)));
 if (!isset($data['updated']) || $data['updated'] < (time() - 5)) {
