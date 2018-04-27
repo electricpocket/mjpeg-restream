@@ -195,11 +195,19 @@ function fresh() {
 		while (!feof($fp)) {
 			$part = fgets($fp);
 			error_log(date('Y-m-d H:i:s')." got stream data: ".bin2hex($part)."\n", 3, 'streamerror.log');
-			if (strlen($part) <= 0 ) continue;
+			if (strlen($part) <= 0 ) 
+			{ 
+				error_log(date('Y-m-d H:i:s')." got stream data:zero length\n", 3, 'streamerror.log');
+				continue;
+			}
 			
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
 				error_log(date('Y-m-d H:i:s')." got stream boudnary:\n", 3, 'streamerror.log');
+			}
+			else {
+				error_log(date('Y-m-d H:i:s')." got stream data: ".bin2hex($part)." no boundary found\n", 3, 'streamerror.log');
+				continue;
 			}
 			$buffer .= $part;
 			$part = $buffer;
