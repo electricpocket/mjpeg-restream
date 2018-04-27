@@ -33,7 +33,7 @@ if (!isset($_GET['port'])) {
 }
 $host = "localhost";
 $port = $_GET['port'] + 10000;//"17125";
-$url = "";
+$url = "/webcam";
 $horizon = false; //draw a horizon line?
 
 // Image settings:
@@ -163,8 +163,9 @@ function fresh() {
 	global $data, $tmid, $tdmid, $start, $in2, $host, $port, $url, $boundary, $fallback, $timelimit;
 
 	if (!headers_sent()) {
+		header('Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8');
 		header('Accept-Range: bytes');
-		header('Connection: close');
+		header('Connection: keep-alive');
 		header('Content-Type: multipart/x-mixed-replace;boundary=' . $boundary);
 		header('Cache-Control: no-cache');
 	}
