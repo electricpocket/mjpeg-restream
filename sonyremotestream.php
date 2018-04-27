@@ -14,7 +14,7 @@ Usage: <img src="stream.php" />
 Notes: If you are keen to have image overlays clickable, use html elements overlaying the <img> element (ie: wrap <img> in a <div> with position:relative; and add an <a> element with display:block;position:absolute;bottom:0px;left:0px;width:100%;height:15px;background:transparent;z-index:2;)
 Requirements: php5+ compiled with --enable-shmop
           php-gd (sudo yum install php-gd)
-
+//https://aiswatch.net/fleetrange/mjpeg-restream/sonyremotestream.php?port=7193
  */
 
 
@@ -33,7 +33,7 @@ if (!isset($_GET['port'])) {
 }
 $host = "localhost";
 $port = $_GET['port'] + 10000;//"17125";
-$url = "/";
+$url = "";
 $horizon = false; //draw a horizon line?
 
 // Image settings:
