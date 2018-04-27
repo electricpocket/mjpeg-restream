@@ -192,7 +192,7 @@ function fresh() {
 		$buffer = '';
 		while (!feof($fp)) {
 			$part = fgets($fp);
-			error_log(date('Y-m-d H:i:s')." got stream data: \n", 3, 'streamerror.log');
+			error_log(date('Y-m-d H:i:s')." got stream data: ".bin2hex($part)."\n", 3, 'streamerror.log');
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
 				error_log(date('Y-m-d H:i:s')." got stream boudnary:\n", 3, 'streamerror.log');
