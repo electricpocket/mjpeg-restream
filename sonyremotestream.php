@@ -39,7 +39,7 @@ $horizon = false; //draw a horizon line?
 // Image settings:
 $overlay = "frlogo.png"; //image that will be superimposed onto the stream
 $fallback = $_GET['port'] . "_still.jpg"; //image that will get updated every 20 frames or so for browsers that don't support mjpeg streams
-$boundary = "boundarydonotcross";
+$boundary = "7b3cc56e5f51db803f790dad720ed50a";
 $timelimit = 300; //number of seconds to run for
 $cameraOffset = 0; //horizontal angle camera is pointing
 $cameraUpsideDown = false; //is the camera mounted upside down
