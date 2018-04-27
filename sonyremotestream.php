@@ -192,9 +192,10 @@ function fresh() {
 		$buffer = '';
 		while (!feof($fp)) {
 			$part = fgets($fp);
-			error_log(date('Y-m-d H:i:s')." got stream: ".$part."\n", 3, 'streamerror.log');
+			//error_log(date('Y-m-d H:i:s')." got stream: ".$part."\n", 3, 'streamerror.log');
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
+				error_log(date('Y-m-d H:i:s')." got stream boudnary:\n", 3, 'streamerror.log');
 			}
 			$buffer .= $part;
 			$part = $buffer;
@@ -207,6 +208,7 @@ function fresh() {
 
 			$img = @imagecreatefromstring($part);
 			if ($img) {
+				error_log(date('Y-m-d H:i:s')." got stream image:\n", 3, 'streamerror.log');
 				$buffer = substr($buffer, strpos($buffer, $part)
 						+ strlen($part));
 				ob_start();
@@ -226,6 +228,7 @@ function fresh() {
 				if (($data['frame'] / 20) - (ceil($data['frame'] / 20)) == 0)
 					file_put_contents($fallback, $imgstr);
 				if ((time() - $start) > $timelimit) {
+					error_log(date('Y-m-d H:i:s')." exite:\n", 3, 'streamerror.log');
 					exit;
 				}
 				flush();
