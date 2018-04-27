@@ -179,7 +179,7 @@ function fresh() {
 	if ($fp) {
 		$username = "fleetrange";
 		$password = trim($port - 10000);
-		error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." error ".$errstr."\n", 3, 'streamerror.log');
+		error_log(date('Y-m-d H:i:s')." stream open: ".$username.",".$port.",".$password." error ".$errstr."\n", 3, 'streamerror.log');
 
 		//$auth = base64_encode($username . ":" . $password);
 		$out = "GET $url HTTP/1.1\r\n";
@@ -192,7 +192,7 @@ function fresh() {
 		$buffer = '';
 		while (!feof($fp)) {
 			$part = fgets($fp);
-			//error_log(date('Y-m-d H:i:s')." got stream: ".$part."\n", 3, 'streamerror.log');
+			error_log(date('Y-m-d H:i:s')." got stream data: \n", 3, 'streamerror.log');
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
 				error_log(date('Y-m-d H:i:s')." got stream boudnary:\n", 3, 'streamerror.log');
