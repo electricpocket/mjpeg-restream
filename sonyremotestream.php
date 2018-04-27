@@ -203,7 +203,7 @@ function fresh() {
 			
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
-				error_log(date('Y-m-d H:i:s')." got stream boudnary:".substr($part, '--',"\r\n\r\n")."\n", 3, 'streamerror.log');
+				error_log(date('Y-m-d H:i:s')." got stream boudnary:".substr($part, '--',strpos($part, "\r\n\r\n"))."\n", 3, 'streamerror.log');
 			}
 			else {
 				error_log(date('Y-m-d H:i:s')." got stream data: ".$part." no boundary found\n", 3, 'streamerror.log');
@@ -215,9 +215,10 @@ function fresh() {
 				$part = substr($part, 3);
 			$part = substr($part,
 					strpos($part, '--' . $boundary) + strlen('--' . $boundary));
-			$part = trim(substr($part, strpos($part, "\r\n\r\n")));
 			if (strpos($part, '--' . $boundary)===FALSE)
 				continue;
+			$part = trim(substr($part, strpos($part, "\r\n\r\n")));
+			
 			$part = substr($part, 0, strpos($part, '--' . $boundary));
 			error_log(date('Y-m-d H:i:s')." creating image from: ".$part."\n", 3, 'streamerror.log');
 			$img = @imagecreatefromstring($part);
