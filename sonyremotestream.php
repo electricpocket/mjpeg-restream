@@ -175,13 +175,13 @@ function fresh() {
 	shmop_write($tmid, str_pad(serialize($data), 1024, ' '), 0);
 
 	$fp = @fsockopen($host, $port, $errno, $errstr, 10);
-	//error_log(date('Y-m-d H:i:s')." stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, 'streamerror.log');
+	error_log(date('Y-m-d H:i:s')." stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, 'streamerror.log');
 	if ($fp) {
 		$username = "fleetrange";
 		$password = trim($port - 10000);
-		//error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." error ".$errstr."\n", 3, 'streamerror.log');
+		error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." error ".$errstr."\n", 3, 'streamerror.log');
 
-		$auth = base64_encode($username . ":" . $password);
+		//$auth = base64_encode($username . ":" . $password);
 		$out = "GET $url HTTP/1.1\r\n";
 		$out .= "Host: $host\r\n";
 		//$out .= "Authorization: Basic $auth\r\n";
@@ -192,6 +192,7 @@ function fresh() {
 		$buffer = '';
 		while (!feof($fp)) {
 			$part = fgets($fp);
+			error_log(date('Y-m-d H:i:s')." got stream: ".$part."\n", 3, 'streamerror.log');
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
 			}
