@@ -206,7 +206,7 @@ function fresh() {
 				error_log(date('Y-m-d H:i:s')." got stream boudnary:\n", 3, 'streamerror.log');
 			}
 			else {
-				error_log(date('Y-m-d H:i:s')." got stream data: ".bin2hex($part)." no boundary found\n", 3, 'streamerror.log');
+				error_log(date('Y-m-d H:i:s')." got stream data: ".$part." no boundary found\n", 3, 'streamerror.log');
 				continue;
 			}
 			$buffer .= $part;
