@@ -194,8 +194,10 @@ function fresh() {
 		$buffer = '';
 		while (!feof($fp)) {
 			$part = fgets($fp);
+			error_log(date('Y-m-d H:i:s')." Read stream length: ".strlen($part)."\n", 3, 'streamerror.log');
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
+				error_log(date('Y-m-d H:i:s')." Found boundary\n", 3, 'streamerror.log');
 			}
 			$buffer .= $part;
 			$part = $buffer;
@@ -205,6 +207,8 @@ function fresh() {
 					strpos($part, '--' . $boundary) + strlen('--' . $boundary));
 			$part = trim(substr($part, strpos($part, "\r\n\r\n")));
 			$part = substr($part, 0, strpos($part, '--' . $boundary));
+			error_log(date('Y-m-d H:i:s')." attempting image creation\n", 3, 'streamerror.log');
+			$img = @imagecreatefromstring($part);
 			if ($img) {
 				error_log(date('Y-m-d H:i:s')." got stream image:\n", 3, 'streamerror.log');
 				$buffer = substr($buffer, strpos($buffer, $part)
