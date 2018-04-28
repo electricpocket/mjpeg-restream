@@ -228,7 +228,7 @@ function fresh() {
 			}
 			
 			$buffer .= $part;
-			if (strstr($part,"\r\n\r\n")) {
+			if (strstr($buffer,"\r\n\r\n")) {
 					
 				error_log(date('Y-m-d H:i:s')." Headers :".$buffer."\n".bin2hex($part)."\n", 3, 'streamerror.log');
 			}
@@ -248,7 +248,7 @@ function fresh() {
 				error_log(date('Y-m-d H:i:s')." Found end boundary:".strlen($part)."at pos ".strpos($part, '--' . $boundary)."\n", 3, 'streamerror.log');
 			}
 			$part = substr($part, 0, strpos($part, '--' . $boundary));
-			if (strlen($part)>0) file_put_contents("newimage.jpg",$buffer);
+			if (strlen($part)>0) file_put_contents("newimage.jpg",$part);
 			error_log(date('Y-m-d H:i:s')."part len after looking for next boundary ".strlen($part)."\n", 3, 'streamerror.log');
 			error_log(date('Y-m-d H:i:s')." attempting image creation len ".strlen($part)."\n", 3, 'streamerror.log');
 			
