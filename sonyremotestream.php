@@ -211,9 +211,6 @@ function fresh() {
 		//$auth = base64_encode($username . ":" . $password);
 		$out = "GET $url HTTP/1.1\r\n";
 		$out .= "Host: $host\r\n";
-		$out .= "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\r\n";
-		$out .= "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36\r\n";
-		$out .= "Connection: keep-alive\r\n";
 		$out .= "\r\n";
 		fwrite($fp, $out);
 		$ec = "";
@@ -221,38 +218,27 @@ function fresh() {
 		$buffer = '';
 		while (!feof($fp)) {
 			$part = fgets($fp);
-			error_log(date('Y-m-d H:i:s')." Read stream length: ".strlen($part)."\n", 3, 'streamerror.log');
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
-				error_log(date('Y-m-d H:i:s')." Found boundary:".$part."\n".bin2hex($part)."\n", 3, 'streamerror.log');
 			}
-			
 			$buffer .= $part;
-			if (strstr($buffer,"\r\n\r\n")) {
-					
-				error_log(date('Y-m-d H:i:s')." Headers :".$buffer."\n".bin2hex($part)."\n", 3, 'streamerror.log');
-			}
 			$part = $buffer;
-			error_log(date('Y-m-d H:i:s')."part len before cleaning ".strlen($part)."\n", 3, 'streamerror.log');
-			$part = trim(substr($part, strpos($part, "\r\n\r\n")));
-			error_log(date('Y-m-d H:i:s')."part len after remove http headers ".strlen($part)."\n", 3, 'streamerror.log');
-				
-			//if (substr(trim($part), 0, 2) == "--")
-			//	$part = substr($part, 3);
+			if (substr(trim($part), 0, 2) == "--")
+				$part = substr($part, 3);
 			$part = substr($part,
 					strpos($part, '--' . $boundary) + strlen('--' . $boundary));
-			error_log(date('Y-m-d H:i:s')."part len after remove first boundary ".strlen($part)."\n", 3, 'streamerror.log');
-			
-			if (strstr($part, '--' . $boundary)) {
-				
-				error_log(date('Y-m-d H:i:s')." Found end boundary:".strlen($part)."at pos ".strpos($part, '--' . $boundary)."\n", 3, 'streamerror.log');
-			}
+			$part = trim(substr($part, strpos($part, "\r\n\r\n")));
 			$part = substr($part, 0, strpos($part, '--' . $boundary));
-			if (strlen($part)>0) file_put_contents("newimage.jpg",$part);
-			error_log(date('Y-m-d H:i:s')."part len after looking for next boundary ".strlen($part)."\n", 3, 'streamerror.log');
-			error_log(date('Y-m-d H:i:s')." attempting image creation len ".strlen($part)."\n", 3, 'streamerror.log');
+			//if (strlen($part)>0) file_put_contents("newimage.jpg",$part);
 			
-			$img = @imagecreatefromstring($part);
+			//error_log(date('Y-m-d H:i:s')." attempting image creation len ".strlen($part)."\n", 3, 'streamerror.log');
+			
+			if (strlen($part) > 0) 
+			{
+				error_log(date('Y-m-d H:i:s')." attempting image creation len ".strlen($part)."\n", 3, 'streamerror.log');
+					
+				$img = @imagecreatefromstring($part);
+			
 			if ($img) {
 				error_log(date('Y-m-d H:i:s')." got stream image:\n", 3, 'streamerror.log');
 				$buffer = substr($buffer, strpos($buffer, $part)
@@ -278,6 +264,7 @@ function fresh() {
 					exit;
 				}
 				flush();
+			}
 			}
 		}
 	} else {
