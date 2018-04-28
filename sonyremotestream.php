@@ -16,7 +16,34 @@ Requirements: php5+ compiled with --enable-shmop
           php-gd (sudo yum install php-gd)
 //https://aiswatch.net/fleetrange/mjpeg-restream/sonyremotestream.php?port=7193
  */
+function hex_dump($data, $newline="\n")
+{
+	static $from = '';
+	static $to = '';
 
+	static $width = 16; # number of bytes per line
+
+	static $pad = '.'; # padding for non-visible characters
+
+	if ($from==='')
+	{
+		for ($i=0; $i<=0xFF; $i++)
+		{
+		$from .= chr($i);
+		$to .= ($i >= 0x20 && $i <= 0x7E) ? chr($i) : $pad;
+		}
+	}
+
+	$hex = str_split(bin2hex($data), $width*2);
+	$chars = str_split(strtr($data, $from, $to), $width);
+
+	$offset = 0;
+	foreach ($hex as $i => $line)
+	{
+	echo sprintf('%6X',$offset).' : '.implode(' ', str_split($line,2)) . ' [' . $chars[$i] . ']' . $newline;
+	$offset += $width;
+	}
+	}
 
 if (!ini_get('date.timezone'))
 {
@@ -197,7 +224,7 @@ function fresh() {
 			error_log(date('Y-m-d H:i:s')." Read stream length: ".strlen($part)."\n", 3, 'streamerror.log');
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
-				error_log(date('Y-m-d H:i:s')." Found boundary\n", 3, 'streamerror.log');
+				error_log(date('Y-m-d H:i:s')." Found boundary:".$part."/n".hex_dump($part)."\n", 3, 'streamerror.log');
 			}
 			$buffer .= $part;
 			$part = $buffer;
