@@ -224,10 +224,15 @@ function fresh() {
 			error_log(date('Y-m-d H:i:s')." Read stream length: ".strlen($part)."\n", 3, 'streamerror.log');
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
-				error_log(date('Y-m-d H:i:s')." Found boundary:".$part."/n".hex_dump($part)."\n", 3, 'streamerror.log');
+				error_log(date('Y-m-d H:i:s')." Found boundary:".$part."/n".bin2hex($part)."\n", 3, 'streamerror.log');
+			}
+			if (strstr($part,"Content-Length")) {
+			
+				error_log(date('Y-m-d H:i:s')." Length:".$part."/n".bin2hex($part)."\n", 3, 'streamerror.log');
 			}
 			$buffer .= $part;
 			$part = $buffer;
+			error_log(date('Y-m-d H:i:s')."part len before cleaning ".strlen($part)."\n", 3, 'streamerror.log');
 			if (substr(trim($part), 0, 2) == "--")
 				$part = substr($part, 3);
 			$part = substr($part,
@@ -235,10 +240,14 @@ function fresh() {
 			error_log(date('Y-m-d H:i:s')."part len after remove first boundary ".strlen($part)."\n", 3, 'streamerror.log');
 			$part = trim(substr($part, strpos($part, "\r\n\r\n")));
 			error_log(date('Y-m-d H:i:s')."part len after remove http headers ".strlen($part)."\n", 3, 'streamerror.log');
+			if (strstr($part, '--' . $boundary)) {
+				
+				error_log(date('Y-m-d H:i:s')." Found end boundary:".strlen($part)."at pos ".strpos($part, '--' . $boundary)."\n", 3, 'streamerror.log');
+			}
 			$part = substr($part, 0, strpos($part, '--' . $boundary));
 			error_log(date('Y-m-d H:i:s')."part len after looking for next boundary ".strlen($part)."\n", 3, 'streamerror.log');
 			error_log(date('Y-m-d H:i:s')." attempting image creation len ".strlen($part)."\n", 3, 'streamerror.log');
-			file_put_contents("newimage.jpg",$buffer);
+			//file_put_contents("newimage.jpg",$buffer);
 			$img = @imagecreatefromstring($part);
 			if ($img) {
 				error_log(date('Y-m-d H:i:s')." got stream image:\n", 3, 'streamerror.log');
@@ -261,7 +270,7 @@ function fresh() {
 				if (($data['frame'] / 20) - (ceil($data['frame'] / 20)) == 0)
 					file_put_contents($fallback, $imgstr);
 				if ((time() - $start) > $timelimit) {
-					error_log(date('Y-m-d H:i:s')." exite:\n", 3, 'streamerror.log');
+					error_log(date('Y-m-d H:i:s')." exit:\n", 3, 'streamerror.log');
 					exit;
 				}
 				flush();
