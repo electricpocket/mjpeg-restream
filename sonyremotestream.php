@@ -194,7 +194,7 @@ function fresh() {
 		$buffer = '';
 		while (!feof($fp)) {
 			$part = fgets($fp);
-			error_log(date('Y-m-d H:i:s')." Read stream length: ".strlen($part)."\n", 3, 'streamerror.log');
+			//error_log(date('Y-m-d H:i:s')." Read stream length: ".strlen($part)."\n", 3, 'streamerror.log');
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
 				error_log(date('Y-m-d H:i:s')." Found boundary\n", 3, 'streamerror.log');
