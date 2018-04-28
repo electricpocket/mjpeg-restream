@@ -37,7 +37,7 @@ $horizon = false; //draw a horizon line?
 $overlay = "frlogo.png"; //image that will be superimposed onto the stream
 $fallback = $_GET['port'] . "_still.jpg"; //image that will get updated every 20 frames or so for browsers that don't support mjpeg streams
 $boundary = "boundarydonotcross";
-if ($port==7193) //special case for sony cameras we use cvlc to read rtsp stream from 10.106.16.84/media/video2
+if ($_GET['port']==7193) //special case for sony cameras we use cvlc to read rtsp stream from 10.106.16.84/media/video2
 {
 	$url = "/webcam";
 	$boundary = "7b3cc56e5f51db803f790dad720ed50a";
