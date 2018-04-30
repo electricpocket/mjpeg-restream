@@ -50,7 +50,7 @@ if ($sonyrtsp) //special case for sony cameras we use cvlc to read rtsp stream f
 $timelimit = 300; //number of seconds to run for
 $cameraOffset = 0; //horizontal angle camera is pointing
 $cameraUpsideDown = false; //is the camera mounted upside down
-if ($_GET['port'] == 7124)
+if ($_GET['port'] == 7124 || $_GET['port'] == 7186)
 	$cameraUpsideDown = true;
 //finlandia
 if (isset($_GET['flip']))
