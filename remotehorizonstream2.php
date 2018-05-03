@@ -47,7 +47,7 @@ if ($sonyrtsp) //special case for sony cameras we use cvlc to read rtsp stream f
 	$url = "/webcam";
 	$boundary = "7b3cc56e5f51db803f790dad720ed50a";
 }
-$timelimit = 300; //number of seconds to run for
+$timelimit = 5; //number of seconds to run for
 $cameraOffset = 0; //horizontal angle camera is pointing
 $cameraUpsideDown = false; //is the camera mounted upside down
 if ($_GET['port'] == 7124 || $_GET['port'] == 7186 || $_GET['port'] == 7154 || $_GET['port'] == 7155)
@@ -69,55 +69,14 @@ $start = time();
 $in2 = imageCreateFromPNG($overlay);
 
 //create different shared memory for each camera
-$tmid = shmop_open($_GET['port'], 'c', 0777, 1024);
-$tdmid = shmop_open($port, 'c', 0777, 102400);
+//$tmid = shmop_open($_GET['port'], 'c', 0777, 1024);
+//$tdmid = shmop_open($port, 'c', 0777, 102400);
 //$tmid = shmop_open(0xff4, 'c', 0777, 1024);
 //$tdmid = shmop_open(0xff6, 'c', 0777, 102400);
 
 
-$data = unserialize(trim(shmop_read($tmid, 0, 1024)));
-if (!isset($data['updated']) || $data['updated'] < (time() - 5)) {
-	fresh();
-}
 
-header('Accept-Range: bytes');
-header('Connection: close');
-header('Content-Type: multipart/x-mixed-replace;boundary=' . $boundary);
-header('Cache-Control: no-cache');
-
-$curframe = $data['frame'];
-
-//var_dump($frame);
-while ($data['updated'] > (time() - 5)) {
-	if ($curframe != $data['frame']) {
-		$curframe = $data['frame'];
-
-		$frames = unserialize(trim(shmop_read($tdmid, 0, 102400)));
-		$key = array_pop(array_keys($frames));
-		if ($snapshot)
-		{
-			header('Content-Type: image/jpeg');
-			header('Content-Length: '.strlen($frames[$key]));
-			echo($frames[$key]);
-		}
-		else
-		{
-			echo "--$boundary\r\nContent-Type: image/jpeg\r\nContent-Length: "
-			. strlen($frames[$key]) . "\r\n\r\n" . $frames[$key];
-		}
-		flush();
-	}
-	if ($snapshot)
-		break;
-	usleep(50000);
-	$data = unserialize(trim(shmop_read($tmid, 0, 1024)));
-}
-if ((time() - $start) < 30 && !$snapshot) {
-	fresh();
-}
-
-shmop_close($tdmid);
-shmop_close($tmid);
+fresh();
 
 exit;
 
@@ -177,18 +136,6 @@ function output($in) {
 function fresh() {
 	global $data, $tmid, $tdmid, $start, $in2, $host, $port, $url,$cameraUpsideDown, $boundary, $fallback, $timelimit;
 
-	if (!headers_sent()) {
-		header('Accept-Range: bytes');
-		header('Connection: close');
-		header('Content-Type: multipart/x-mixed-replace;boundary=' . $boundary);
-		header('Cache-Control: no-cache');
-	}
-
-	$data['updated'] = time();
-	$data['frame'] = 0;
-	$frames = array();
-	shmop_write($tmid, str_pad(serialize($data), 1024, ' '), 0);
-
 	$fp = @fsockopen($host, $port, $errno, $errstr, 10);
 	//error_log(date('Y-m-d H:i:s')." stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, 'streamerror.log');
 	if ($fp) {
@@ -232,21 +179,10 @@ function fresh() {
 				output($img, true); //,null,60
 				$imgstr = ob_get_contents();
 				ob_end_clean();
-				$data['frame']++;
-				$data['updated'] = time();
-				while (count($frames) > 2)
-					array_shift($frames);
-				$frames[] = $imgstr;
-				shmop_write($tdmid, str_pad(serialize($frames), 102400, ' '), 0);
-				shmop_write($tmid, str_pad(serialize($data), 1024, ' '), 0);
 
-				echo "--$boundary\r\nContent-Type: image/jpeg\r\nContent-Length: "
+				echo "Content-Type: image/jpeg\r\nContent-Length: "
 						. strlen($imgstr) . "\r\n\r\n" . $imgstr; //$frames[$data['frame']]
-				if (($data['frame'] / 20) - (ceil($data['frame'] / 20)) == 0)
-					file_put_contents($fallback, $imgstr);
-				if ((time() - $start) > $timelimit) {
-					exit;
-				}
+				
 				flush();
 			}
 		}
@@ -262,7 +198,7 @@ function fresh() {
 		output($img);
 		$imgstr = ob_get_contents();
 		ob_end_clean();
-		echo "--$boundary\r\nContent-Type: image/jpeg\r\nContent-Length: "
+		echo "Content-Type: image/jpeg\r\nContent-Length: "
 				. strlen($imgstr) . "\r\n\r\n" . $imgstr;
 		flush();
 	}
