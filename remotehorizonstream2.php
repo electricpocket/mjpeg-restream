@@ -191,8 +191,9 @@ function fresh() {
 		output($img);
 		$imgstr = ob_get_contents();
 		ob_end_clean();
-		echo "Content-Type: image/jpeg\r\nContent-Length: "
-				. strlen($imgstr) . "\r\n\r\n" . $imgstr;
+		header("Content-Type: image/jpeg");
+		header("Content-Length: ". strlen($imgstr));
+		echo $imgstr;
 		flush();
 	}
 }
