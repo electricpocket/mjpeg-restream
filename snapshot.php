@@ -178,6 +178,7 @@ function fresh() {
 				output($img, true); //,null,60
 				$imgstr = ob_get_contents();
 				ob_end_clean();
+				file_put_contents($fallback, $imgstr);
 
 				header("Content-Type: image/jpeg");
 				header("Content-Length: ". strlen($imgstr));
