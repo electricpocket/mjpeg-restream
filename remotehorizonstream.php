@@ -161,7 +161,7 @@ function output($in) {
 }
 
 function fresh() {
-	global $data, $tmid, $tdmid, $start, $in2, $host, $port, $url, $boundary, $fallback, $timelimit;
+	global $data, $tmid, $tdmid, $start, $in2, $host, $port, $url,$cameraUpsideDown, $boundary, $fallback, $timelimit;
 
 	if (!headers_sent()) {
 		header('Accept-Range: bytes');
