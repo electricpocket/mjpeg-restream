@@ -179,8 +179,8 @@ function fresh() {
 				$imgstr = ob_get_contents();
 				ob_end_clean();
 
-				header("Content-Type: image/jpeg);
-				header(Content-Length: ". strlen($imgstr));
+				header("Content-Type: image/jpeg");
+				header("Content-Length: ". strlen($imgstr));
 				echo $imgstr; 
 				
 				flush();
