@@ -112,7 +112,7 @@ while ($data['updated'] > (time() - 5)) {
 	usleep(50000);
 	$data = unserialize(trim(shmop_read($tmid, 0, 1024)));
 }
-if ((time() - $start) < 30) {
+if ((time() - $start) < 30 && !$snapshot) {
 	fresh();
 }
 
