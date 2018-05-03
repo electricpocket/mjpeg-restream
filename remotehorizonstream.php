@@ -213,7 +213,7 @@ function fresh() {
 				if ($cameraUpsideDown)
 				{
 					if (function_exists("imageflip")) imageflip($img, IMG_FLIP_BOTH);
-					else $mg=imagerotate($img, 180, 0);
+					else $img=imagerotate($img, 180, 0);
 				}
 				output($img, true); //,null,60
 				$imgstr = ob_get_contents();
