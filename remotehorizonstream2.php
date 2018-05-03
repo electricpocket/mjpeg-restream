@@ -63,8 +63,6 @@ if (isset($_GET['snapshot']) && $_GET['snapshot']==1)
 // (or can make it look like you know what you are doing, and won't get naggy if you can't fix it.)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-set_time_limit($timelimit);
-
 $start = time();
 $in2 = imageCreateFromPNG($overlay);
 
@@ -138,7 +136,8 @@ function fresh() {
 
 	$fp = @fsockopen($host, $port, $errno, $errstr, 10);
 	//error_log(date('Y-m-d H:i:s')." stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, 'streamerror.log');
-	if ($fp) {
+	if ($fp) 
+	{
 		$username = "fleetrange";
 		$password = trim($port - 10000);
 		//error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." error ".$errstr."\n", 3, 'streamerror.log');
@@ -184,9 +183,12 @@ function fresh() {
 						. strlen($imgstr) . "\r\n\r\n" . $imgstr; //$frames[$data['frame']]
 				
 				flush();
+				fclose($fp);
+				break;
 			}
 		}
-	} else {
+	} 
+	else {
 		$img = imageCreateFromJPEG($fallback);
 
 		imagestring($in, 3, 25, 180, "Could not connect to the camera source",
