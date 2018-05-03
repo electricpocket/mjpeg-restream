@@ -127,12 +127,6 @@ function output($in) {
 	}
 
 	
-	if ($cameraUpsideDown)
-	{	
-		if (function_exists("imageflip")) imageflip($in, IMG_FLIP_BOTH);
-		else $in=imagerotate($in, 180, 0);
-	}
-	
 	imagecopy($in, $in2, 0, 0, 0, 0, 640, 480);
 	//imageantialias($in,true); //requires php 7.2
 	$font = 4;
@@ -216,6 +210,11 @@ function fresh() {
 				$buffer = substr($buffer, strpos($buffer, $part)
 						+ strlen($part));
 				ob_start();
+				if ($cameraUpsideDown)
+				{
+					if (function_exists("imageflip")) imageflip($img, IMG_FLIP_BOTH);
+					else $mg=imagerotate($img, 180, 0);
+				}
 				output($img, true); //,null,60
 				$imgstr = ob_get_contents();
 				ob_end_clean();
