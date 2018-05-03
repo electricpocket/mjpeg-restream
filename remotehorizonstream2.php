@@ -55,9 +55,7 @@ if ($_GET['port'] == 7124 || $_GET['port'] == 7186 || $_GET['port'] == 7154 || $
 //finlandia
 if (isset($_GET['flip']))
 	$cameraUpsideDown = $_GET['flip'] > 0;
-$snapshot = false; //is this a one off snapshot request
-if (isset($_GET['snapshot']) && $_GET['snapshot']==1)
-	$snapshot = true;
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Stuff below here will break things if edited. Avert your eyes unless you know what you are doing
 // (or can make it look like you know what you are doing, and won't get naggy if you can't fix it.)
@@ -65,14 +63,6 @@ if (isset($_GET['snapshot']) && $_GET['snapshot']==1)
 
 $start = time();
 $in2 = imageCreateFromPNG($overlay);
-
-//create different shared memory for each camera
-//$tmid = shmop_open($_GET['port'], 'c', 0777, 1024);
-//$tdmid = shmop_open($port, 'c', 0777, 102400);
-//$tmid = shmop_open(0xff4, 'c', 0777, 1024);
-//$tdmid = shmop_open(0xff6, 'c', 0777, 102400);
-
-
 
 fresh();
 
