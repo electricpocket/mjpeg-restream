@@ -157,7 +157,7 @@ function output($in) {
 		imageline($in, $x1, $y1, $x2, $y2, $lineColor);
 	}
 
-	imagejpeg($in, NULL, 60);
+	imagejpeg($in, NULL, 100);
 }
 
 function fresh() {
