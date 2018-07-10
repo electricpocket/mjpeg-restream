@@ -194,7 +194,7 @@ function fresh() {
 		while (!feof($fp)) {
 				
 			$part = fgets($fp);
-			error_log(date('Y-m-d H:i:s')." stream: read ".strlen($part)."\n", 3, $port.'streamerror.log');
+			error_log(date('Y-m-d H:i:s')." stream: read: ". $part."\n", 3, $port.'streamerror.log');
 				
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
