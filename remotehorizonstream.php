@@ -176,11 +176,11 @@ function fresh() {
 	shmop_write($tmid, str_pad(serialize($data), 1024, ' '), 0);
 
 	$fp = @fsockopen($host, $port, $errno, $errstr, 10);
-	//error_log(date('Y-m-d H:i:s')." stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, 'streamerror.log');
+	
 	if ($fp) {
 		$username = "fleetrange";
 		$password = trim($port - 10000);
-		error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." connected\n", 3, $port.'streamerror.log');
+		//error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." connected\n", 3, $port.'streamerror.log');
 
 		$auth = base64_encode($username . ":" . $password);
 		$out = "GET $url HTTP/1.1\r\n";
@@ -194,7 +194,7 @@ function fresh() {
 		while (!feof($fp)) {
 				
 			$part = fgets($fp);
-			error_log(date('Y-m-d H:i:s')." stream: read: ". $part."\n", 3, $port.'streamerror.log');
+			//error_log(date('Y-m-d H:i:s')." stream: read: ". $part."\n", 3, $port.'streamerror.log');
 				
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
@@ -241,6 +241,9 @@ function fresh() {
 			}
 		}
 	} else {
+		
+		error_log(date('Y-m-d H:i:s')." stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, $port.'streamerror.log');
+		
 		$img = imageCreateFromJPEG($fallback);
 
 		imagestring($in, 3, 25, 180, "Could not connect to the camera source",
