@@ -210,7 +210,7 @@ function fresh() {
 
 			$img = @imagecreatefromstring($part);
 			if ($img) {
-				error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." got frame "."\n", 3, $port.'streamerror.log');
+				//error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." got frame "."\n", 3, $port.'streamerror.log');
 				$buffer = substr($buffer, strpos($buffer, $part)
 						+ strlen($part));
 				ob_start();
