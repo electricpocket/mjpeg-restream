@@ -31,7 +31,7 @@ $host = "localhost";
 $port = $_GET['port'] + 10000;//"17125";
 $url = "/?action=stream";
 $sonyrtsp=false;
-if ($_GET['port']==7193) 
+if ($_GET['port']==7191 || $_GET['port']==7193 || $_GET['port']==7186 ) 
 {
 	$sonyrtsp=true;//special case for sony cameras we use cvlc to read rtsp stream from 10.106.16.84/media/video2
 }
