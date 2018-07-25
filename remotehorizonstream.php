@@ -13,6 +13,7 @@ Requirements: php5+ compiled with --enable-shmop
 
  */
 
+$debug=true; //do more logging
 
 if (!ini_get('date.timezone'))
 {
@@ -180,7 +181,7 @@ function fresh() {
 	if ($fp) {
 		$username = "fleetrange";
 		$password = trim($port - 10000);
-		//error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." connected\n", 3, $port.'streamerror.log');
+		if ($debug) error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." connected\n", 3, $port.'streamerror.log');
 
 		$auth = base64_encode($username . ":" . $password);
 		$out = "GET $url HTTP/1.1\r\n";
@@ -194,7 +195,7 @@ function fresh() {
 		while (!feof($fp)) {
 				
 			$part = fgets($fp);
-			//error_log(date('Y-m-d H:i:s')." stream: read: ". $part."\n", 3, $port.'streamerror.log');
+			if ($debug) error_log(date('Y-m-d H:i:s')." stream: read: ". $part."\n", 3, $port.'streamerror.log');
 				
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
@@ -210,7 +211,7 @@ function fresh() {
 
 			$img = @imagecreatefromstring($part);
 			if ($img) {
-				//error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." got frame "."\n", 3, $port.'streamerror.log');
+				if ($debug) error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." got frame "."\n", 3, $port.'streamerror.log');
 				$buffer = substr($buffer, strpos($buffer, $part)
 						+ strlen($part));
 				ob_start();
