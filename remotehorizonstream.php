@@ -14,7 +14,7 @@ Requirements: php5+ compiled with --enable-shmop
  */
 
 $debug=false; //do more logging of stream state
-
+if ($_GET['port']==7157) $debug=true;
 if (!ini_get('date.timezone'))
 {
 	date_default_timezone_set('UTC');
@@ -108,7 +108,7 @@ shmop_close($tmid);
 
 exit;
 
-function output($in) {
+function output($in, $newDate) {
 	global $in2, $cameraOffset, $cameraUpsideDown, $horizon;
 	$string = date('r');
 	//read in the pitch and roll measurements
@@ -140,9 +140,13 @@ function output($in) {
 	$bg = imagecolorallocate($in, 0, 0, 0);
 	$textColor = imagecolorallocate($in, 255, 255, 255);
 	//Create background
-	imagefilledrectangle($in,  $x, $y, imagesx($in)-10, imagesy($in)-10, $bg);
+	if ($newDate)
+	{
+	    imagefilledrectangle($in,  $x, $y, imagesx($in)-10, imagesy($in)-10, $bg);
+	    imagestring($in, $font, $x, $y, $string, $textColor);
+	}
 	
-	imagestring($in, $font, $x, $y, $string, $textColor);
+	
 	if ($horizon) {
 		$x1 = 0;
 		$x2 = imagesx($in);
@@ -243,17 +247,17 @@ function fresh() {
 		}
 	} else {
 		
-		error_log(date('Y-m-d H:i:s')." stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, $port.'streamerror.log');
+		error_log(date('Y-m-d H:i:s')." using still on stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, $port.'streamerror.log');
 		
 		$img = imageCreateFromJPEG($fallback);
 
-		imagestring($in, 3, 25, 180, "Could not connect to the camera source",
-				imagecolorallocate($in, 255, 255, 255));
-		imagestring($in, 3, 65, 195, "Please try again later...",
-				imagecolorallocate($in, 255, 255, 255));
+		//imagestring($in, 3, 25, 180, "Could not connect to the camera source",
+		//		imagecolorallocate($in, 255, 255, 255));
+		//imagestring($in, 3, 65, 195, "Please try again later...",
+		//		imagecolorallocate($in, 255, 255, 255));
 
 		ob_start();
-		output($img);
+		output($img,false);
 		$imgstr = ob_get_contents();
 		ob_end_clean();
 		echo "--$boundary\r\nContent-Type: image/jpeg\r\nContent-Length: "
