@@ -31,6 +31,7 @@ if (!isset($_GET['port'])) {
 $host = "localhost";
 $port = $_GET['port'] + 10000;//"17125";
 $url = "/?action=stream";
+if ($_GET['port']==7185) $url = "/mobile_A?S=640x480&Q=Motion&L=1&C=120000&I=1";
 $sonyrtsp=false;
 if ($_GET['port']==7191 || $_GET['port']==7192 || $_GET['port']==7193 || $_GET['port']==7186 || $_GET['port']==7209 ) 
 {
@@ -185,6 +186,11 @@ function fresh() {
 	if ($fp) {
 		$username = "fleetrange";
 		$password = trim($port - 10000);
+		if ($_GET['port']==7185)
+		{
+		    $username = "user1";
+		    $password = "Tallink1";
+		}
 		if ($debug) error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." connected\n", 3, $port.'streamerror.log');
 
 		$auth = base64_encode($username . ":" . $password);
