@@ -13,7 +13,7 @@ Requirements: php5+ compiled with --enable-shmop
 
  */
 
-$debug=false; //do more logging of stream state
+$debug=true; //do more logging of stream state
 if ($_GET['port']==7157) $debug=true;
 if (!ini_get('date.timezone'))
 {
@@ -52,7 +52,8 @@ if ($sonyrtsp) //special case for sony cameras we use cvlc to read rtsp stream f
 if ($_GET['port']==7185)
 {
     $url = "/cgi-bin/mjpeg?resolution=640x480&framerate=10&Language=0";
-    $boundary = "--myboundary";
+    $boundary = "myboundary";
+    //N.B. but they say boundary=--myboundary in the header unfortunately - which means we think the header is the start of a multipart as we are looking for --
 }
 $timelimit = 300; //number of seconds to run for
 $cameraOffset = 0; //horizontal angle camera is pointing
@@ -205,7 +206,7 @@ function fresh() {
 		$out .= "\r\n";
 		fwrite($fp, $out);
 		$ec = "";
-		$in = false;
+		$inframe = false;
 		$buffer = '';
 		while (!feof($fp)) {
 				
@@ -213,7 +214,7 @@ function fresh() {
 			if ($debug) error_log(date('Y-m-d H:i:s')." stream: read: ". $part."\n", 3, $port.'streamerror.log');
 				
 			if (strstr($part, '--' . $boundary)) {
-				$in = true;
+				$inframe = true;
 			}
 			$buffer .= $part;
 			$part = $buffer;
@@ -223,10 +224,11 @@ function fresh() {
 					strpos($part, '--' . $boundary) + strlen('--' . $boundary));
 			$part = trim(substr($part, strpos($part, "\r\n\r\n")));
 			$part = substr($part, 0, strpos($part, '--' . $boundary));
-
+			if ($debug) error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." got part frame "."\n", 3, $port.'streamerror.log');
+			
 			$img = @imagecreatefromstring($part);
 			if ($img) {
-				if ($debug) error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." got frame "."\n", 3, $port.'streamerror.log');
+				if ($debug) error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." got frame image "."\n", 3, $port.'streamerror.log');
 				$buffer = substr($buffer, strpos($buffer, $part)
 						+ strlen($part));
 				ob_start();
