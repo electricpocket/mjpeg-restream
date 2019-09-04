@@ -216,6 +216,17 @@ function fresh() {
 			if (strstr($part, '--' . $boundary)) {
 				$inframe = true;
 			}
+			//if they erroneously put the leading -- in the Content-type header we need to clobber it so it doesn't
+			//mess up our boundary parsing/substring malarchy
+			//Content-type: multipart/x-mixed-replace;boundary =--myboundary
+			if (strpos($part,"boundary =--"))
+			{
+			    $part=substr($part,strpos($part,'boundary =--') + strlen('boundary =--'));
+			}
+			if (strpos($part,"boundary=--"))
+			{
+			    $part=substr($part,strpos($part,'boundary=--') + strlen('boundary=--'));
+			}
 			$buffer .= $part;
 			$part = $buffer;
 			if (substr(trim($part), 0, 2) == "--")
@@ -224,7 +235,6 @@ function fresh() {
 					strpos($part, '--' . $boundary) + strlen('--' . $boundary));
 			$part = trim(substr($part, strpos($part, "\r\n\r\n")));
 			$part = substr($part, 0, strpos($part, '--' . $boundary));
-			if ($debug) error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." got part frame "."\n", 3, $port.'streamerror.log');
 			
 			$img = @imagecreatefromstring($part);
 			if ($img) {
