@@ -219,13 +219,16 @@ function fresh() {
 			//if they erroneously put the leading -- in the Content-type header we need to clobber it so it doesn't
 			//mess up our boundary parsing/substring malarchy
 			//Content-type: multipart/x-mixed-replace;boundary =--myboundary
-			if (strpos($part,"boundary =--"))
-			{
-			    $part=substr($part,strpos($part,'boundary =--') + strlen('boundary =--'));
-			}
-			if (strpos($part,"boundary=--"))
-			{
-			    $part=substr($part,strpos($part,'boundary=--') + strlen('boundary=--'));
+			if ($_GET['port']==7185)
+			{ 
+			    if (strpos($part,"boundary =--"))
+    			{
+    			    $part=substr($part,strpos($part,'boundary =--') + strlen('boundary =--'));
+    			}
+    			if (strpos($part,"boundary=--"))
+    			{
+    			    $part=substr($part,strpos($part,'boundary=--') + strlen('boundary=--'));
+    			}
 			}
 			$buffer .= $part;
 			$part = $buffer;
