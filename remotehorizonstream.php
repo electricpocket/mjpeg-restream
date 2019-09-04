@@ -52,7 +52,7 @@ if ($sonyrtsp) //special case for sony cameras we use cvlc to read rtsp stream f
 if ($_GET['port']==7185)
 {
     $url = "/cgi-bin/mjpeg?resolution=640x480&framerate=10&Language=0";
-    $boundary = "myboundary";
+    $boundary = "--myboundary";
 }
 $timelimit = 300; //number of seconds to run for
 $cameraOffset = 0; //horizontal angle camera is pointing
