@@ -31,7 +31,7 @@ if (!isset($_GET['port'])) {
 $host = "localhost";
 $port = $_GET['port'] + 10000;//"17125";
 $url = "/?action=stream";
-if ($_GET['port']==7185) $url = "/mobile_A?S=640x480&Q=Motion&L=1&C=120000&I=1";
+
 $sonyrtsp=false;
 if ($_GET['port']==7191 || $_GET['port']==7192 || $_GET['port']==7193 || $_GET['port']==7186 || $_GET['port']==7209 ) 
 {
@@ -46,8 +46,13 @@ $fallback = $_GET['port'] . "_still.jpg"; //image that will get updated every 20
 $boundary = "boundarydonotcross";
 if ($sonyrtsp) //special case for sony cameras we use cvlc to read rtsp stream from 10.106.16.84/media/video2
 {
-	$url = "/cgi-bin/mjpeg?resolution=640x480&framerate=10&Language=0";
-	$boundary = "myboundary";
+    $url = "/webcam";
+    $boundary = "7b3cc56e5f51db803f790dad720ed50a";
+}
+if ($_GET['port']==7185)
+{
+    $url = "/cgi-bin/mjpeg?resolution=640x480&framerate=10&Language=0";
+    $boundary = "myboundary";
 }
 $timelimit = 300; //number of seconds to run for
 $cameraOffset = 0; //horizontal angle camera is pointing
