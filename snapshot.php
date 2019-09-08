@@ -47,6 +47,13 @@ if ($sonyrtsp) //special case for sony cameras we use cvlc to read rtsp stream f
 	$url = "/webcam";
 	$boundary = "7b3cc56e5f51db803f790dad720ed50a";
 }
+if ($_GET['port']==7185)
+{
+    $url = "/cgi-bin/mjpeg?resolution=640x480&framerate=10&Language=0";
+    $boundary = "myboundary";
+    //N.B. but they say boundary=--myboundary in the header unfortunately - which means we think the header is the start of a multipart as we are looking for --
+}
+
 $timelimit = 5; //number of seconds to run for
 $cameraOffset = 0; //horizontal angle camera is pointing
 $cameraUpsideDown = false; //is the camera mounted upside down
@@ -140,6 +147,11 @@ function fresh() {
 	{
 		$username = "fleetrange";
 		$password = trim($port - 10000);
+		if ($_GET['port']==7185)
+		{
+		    $username = "user1";
+		    $password = "Tallink1";
+		}
 		//error_log(date('Y-m-d H:i:s')." stream: ".$username.",".$port.",".$password." error ".$errstr."\n", 3, 'streamerror.log');
 
 		$auth = base64_encode($username . ":" . $password);
@@ -155,6 +167,20 @@ function fresh() {
 			$part = fgets($fp);
 			if (strstr($part, '--' . $boundary)) {
 				$in = true;
+			}
+			//if they erroneously put the leading -- in the Content-type header we need to clobber it so it doesn't
+			//mess up our boundary parsing/substring malarchy
+			//Content-type: multipart/x-mixed-replace;boundary =--myboundary
+			if ($_GET['port']==7185)
+			{
+			    if (strpos($part,"boundary =--"))
+			    {
+			        $part=substr($part,strpos($part,'boundary =--') + strlen('boundary =--'));
+			    }
+			    if (strpos($part,"boundary=--"))
+			    {
+			        $part=substr($part,strpos($part,'boundary=--') + strlen('boundary=--'));
+			    }
 			}
 			$buffer .= $part;
 			$part = $buffer;
