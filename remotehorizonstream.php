@@ -14,7 +14,7 @@ Requirements: php5+ compiled with --enable-shmop
  */
 
 $debug=false; //do more logging of stream state
-if ($_GET['port']==7157) $debug=true;
+if ($_GET['port']==7185) $debug=true;
 if (!ini_get('date.timezone'))
 {
 	date_default_timezone_set('UTC');
