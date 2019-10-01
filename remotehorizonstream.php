@@ -14,7 +14,7 @@ Requirements: php5+ compiled with --enable-shmop
  */
 
 $debug=false; //do more logging of stream state
-if ($_GET['port']==7185) $debug=true;
+//if ($_GET['port']==7185) $debug=true;
 if (!ini_get('date.timezone'))
 {
 	date_default_timezone_set('UTC');
@@ -235,7 +235,7 @@ function fresh() {
 			}
 			$buffer .= $part;
 			$part = $buffer;
-			if ($_GET['port']==7194 && substr(trim($part), 0, 2) == "--")
+			if (false && substr(trim($part), 0, 2) == "--") //don't know why this was here - made us drop frames esp 7185
 			{
 				$part = substr($part, 3);
 				if ($debug) error_log(date('Y-m-d H:i:s')." stream: read: remving --\n", 3, $port.'streamerror.log');
