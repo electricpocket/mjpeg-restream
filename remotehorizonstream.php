@@ -211,7 +211,7 @@ function fresh() {
 		while (!feof($fp)) {
 				
 			$part = fgets($fp);
-			if ($debug) error_log(date('Y-m-d H:i:s')." stream: read: ". $part."\n", 3, $port.'streamerror.log');
+			//if ($debug) error_log(date('Y-m-d H:i:s')." stream: read: ". $part."\n", 3, $port.'streamerror.log');
 				
 			if (strstr($part, '--' . $boundary)) {
 				$inframe = true;
@@ -223,17 +223,24 @@ function fresh() {
 			{ 
 			    if (strpos($part,"boundary =--"))
     			{
+    			    if ($debug) error_log(date('Y-m-d H:i:s')." stream: read: got boundary =--\n", 3, $port.'streamerror.log');
     			    $part=substr($part,strpos($part,'boundary =--') + strlen('boundary =--'));
     			}
     			if (strpos($part,"boundary=--"))
     			{
+    			    if ($debug) error_log(date('Y-m-d H:i:s')." stream: read: got boundary=--\n", 3, $port.'streamerror.log');
+    			    
     			    $part=substr($part,strpos($part,'boundary=--') + strlen('boundary=--'));
     			}
 			}
 			$buffer .= $part;
 			$part = $buffer;
 			if (substr(trim($part), 0, 2) == "--")
+			{
 				$part = substr($part, 3);
+				if ($debug) error_log(date('Y-m-d H:i:s')." stream: read: remving --\n", 3, $port.'streamerror.log');
+				
+			}
 			$part = substr($part,
 					strpos($part, '--' . $boundary) + strlen('--' . $boundary));
 			$part = trim(substr($part, strpos($part, "\r\n\r\n")));
