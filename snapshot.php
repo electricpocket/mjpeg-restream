@@ -175,17 +175,24 @@ function fresh() {
 			{
 			    if (strpos($part,"boundary =--"))
 			    {
+			        if ($debug) error_log(date('Y-m-d H:i:s')." stream: read: got boundary =--\n", 3, $port.'streamerror.log');
 			        $part=substr($part,strpos($part,'boundary =--') + strlen('boundary =--'));
 			    }
 			    if (strpos($part,"boundary=--"))
 			    {
+			        if ($debug) error_log(date('Y-m-d H:i:s')." stream: read: got boundary=--\n", 3, $port.'streamerror.log');
+			        
 			        $part=substr($part,strpos($part,'boundary=--') + strlen('boundary=--'));
 			    }
 			}
 			$buffer .= $part;
 			$part = $buffer;
-			if (substr(trim($part), 0, 2) == "--")
-				$part = substr($part, 3);
+			if (false && substr(trim($part), 0, 2) == "--") //don't know why this was here - made us drop frames esp 7185
+			{
+			    $part = substr($part, 3);
+			    if ($debug) error_log(date('Y-m-d H:i:s')." stream: read: remving --\n", 3, $port.'streamerror.log');
+			    
+			}
 			$part = substr($part,
 					strpos($part, '--' . $boundary) + strlen('--' . $boundary));
 			$part = trim(substr($part, strpos($part, "\r\n\r\n")));
