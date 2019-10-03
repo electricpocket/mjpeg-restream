@@ -13,7 +13,7 @@ Requirements: php5+ compiled with --enable-shmop
 
  */
 
-$debug=false; //do more logging of stream state
+$debug=true; //do more logging of stream state
 //if ($_GET['port']==7185) $debug=true;
 if (!ini_get('date.timezone'))
 {
@@ -192,7 +192,7 @@ function fresh() {
 	if ($fp) {
 		$username = "fleetrange";
 		$password = trim($port - 10000);
-		if ($_GET['port']==7185)
+		if (false) //$_GET['port']==7185)
 		{
 		    $username = "user1";
 		    $password = "Tallink1";
@@ -219,7 +219,7 @@ function fresh() {
 			//if they erroneously put the leading -- in the Content-type header we need to clobber it so it doesn't
 			//mess up our boundary parsing/substring malarchy
 			//Content-type: multipart/x-mixed-replace;boundary =--myboundary
-			if ($_GET['port']==7185)
+			if (false)//$_GET['port']==7185)
 			{ 
 			    if (strpos($part,"boundary =--"))
     			{
