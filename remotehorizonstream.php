@@ -49,7 +49,7 @@ if ($sonyrtsp) //special case for sony cameras we use cvlc to read rtsp stream f
     $url = "/webcam";
     $boundary = "7b3cc56e5f51db803f790dad720ed50a";
 }
-if ($_GET['port']==7185)
+if (false)//$_GET['port']==7185)
 {
     $url = "/cgi-bin/mjpeg?resolution=400x300";
     $boundary = "myboundary";
