@@ -175,18 +175,7 @@ function output($in, $newDate) {
 
 function fresh() {
 	global $data, $tmid, $tdmid, $start, $in2, $host, $port, $url,$cameraUpsideDown, $boundary, $fallback, $timelimit,$debug;
-
-	if (!headers_sent()) {
-		header('Accept-Range: bytes');
-		header('Connection: close');
-		header('Content-Type: multipart/x-mixed-replace;boundary=' . $boundary);
-		header('Cache-Control: no-cache');
-	}
-
-	$data['updated'] = time();
-	$data['frame'] = 0;
-	$frames = array();
-	shmop_write($tmid, str_pad(serialize($data), 1024, ' '), 0);
+	
 	$username = "fleetrange";
 	$password = trim($port - 10000);
 	//If this is the troublesome 7209 videotry restarting it first
@@ -204,10 +193,23 @@ function fresh() {
 	    //Do request
 	    $reseturl= "http://localhost:28209/cgi-bin/restartVideo.sh";
 	    $context = stream_context_create($resetopts);
-	    $resetjson = file_get_contents($url, false, $context);
+	    $resetjson = file_get_contents($reseturl, false, $context);
 	    
 	    
 	}
+	
+	if (!headers_sent()) {
+		header('Accept-Range: bytes');
+		header('Connection: close');
+		header('Content-Type: multipart/x-mixed-replace;boundary=' . $boundary);
+		header('Cache-Control: no-cache');
+	}
+
+	$data['updated'] = time();
+	$data['frame'] = 0;
+	$frames = array();
+	shmop_write($tmid, str_pad(serialize($data), 1024, ' '), 0);
+	
 
 	$fp = @fsockopen($host, $port, $errno, $errstr, 10);
 	
