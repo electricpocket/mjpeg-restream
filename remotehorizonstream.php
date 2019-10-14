@@ -200,6 +200,7 @@ function fresh() {
 	
 	if ($_GET['port']==7209)
 	{
+	    //https://stackoverflow.com/questions/29699980/ffmpeg-restream-rtsp-to-mjpeg
 	    $boundary="ffserver";
 	    //$host="3.93.199.138"; //using ubuntu proxy
 	    //$port="8080";
