@@ -201,6 +201,7 @@ function fresh() {
 	if ($_GET['port']==7209)
 	{
 	    $host="3.93.199.138"; //using ubuntu proxy
+	    $port="8080";
 	}
 	
 	if (!headers_sent()) {
