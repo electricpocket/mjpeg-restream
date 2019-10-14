@@ -179,7 +179,7 @@ function fresh() {
 	$username = "fleetrange";
 	$password = trim($port - 10000);
 	//If this is the troublesome 7209 videotry restarting it first
-	if ($_GET['port']==7209)
+	if (false) //$_GET['port']==7209)
 	{
 	    //HTTP options
 	    $resetopts = array('http' =>
@@ -196,6 +196,11 @@ function fresh() {
 	    $resetjson = file_get_contents($reseturl, false, $context);
 	    
 	    
+	}
+	
+	if ($_GET['port']==7209)
+	{
+	    $host="3.93.199.138"; //using ubuntu proxy
 	}
 	
 	if (!headers_sent()) {
