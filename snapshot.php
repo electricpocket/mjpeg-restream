@@ -149,16 +149,15 @@ function fresh() {
 	    //HTTP options
 	    $resetopts = array('http' =>
 	        array(
-	            'method'    => 'POST',
-	            'header'    => array ('Content-type: application/json', 'Authorization: Basic '.base64_encode("$username:$password")),
-	            'content' => '{"reset":"true"}'
+	            'method'    => 'GET',
+	            'header'    => array ('Content-type: application/json', 'Authorization: Basic '.base64_encode("$username:$password"))
 	        )
 	    );
 	    
 	    //Do request
-	    $reseturl= "http://localhost:28209/cgi-bin/restartVideo.sh";
+	    $reseturl= "http://aiswatch.net:28209/cgi-bin/restartVideo.sh";
 	    $context = stream_context_create($resetopts);
-	    $resetjson = file_get_contents($url, false, $context);
+	    $resetjson = file_get_contents($reseturl, false, $context);
 	    
 	    
 	}
