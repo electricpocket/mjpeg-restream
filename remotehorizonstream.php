@@ -13,7 +13,7 @@ Requirements: php5+ compiled with --enable-shmop
 
  */
 
-$debug=true; //do more logging of stream state
+$debug=false; //do more logging of stream state
 //if ($_GET['port']==7185) $debug=true;
 if (!ini_get('date.timezone'))
 {
