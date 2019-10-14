@@ -144,7 +144,7 @@ function fresh() {
 	$username = "fleetrange";
 	$password = trim($port - 10000);
 	//If this is the troublesome 7209 videotry restarting it first
-	if ($_GET['port']==7209)
+	if (false)//$_GET['port']==7209)
 	{
 	    //HTTP options
 	    $resetopts = array('http' =>
@@ -161,6 +161,13 @@ function fresh() {
 	    
 	    
 	}
+	
+	if ($_GET['port']==7209)
+	{
+	    $host="3.93.199.138"; //using ubuntu proxy
+	    $port="8080";
+	}
+	
 	$fp = @fsockopen($host, $port, $errno, $errstr, 10);
 	//error_log(date('Y-m-d H:i:s')." stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, 'streamerror.log');
 	if ($fp) 
