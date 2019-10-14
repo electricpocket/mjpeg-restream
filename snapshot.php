@@ -140,7 +140,28 @@ function output($in) {
 
 function fresh() {
 	global $data, $tmid, $tdmid, $start, $in2, $host, $port, $url,$cameraUpsideDown, $boundary, $fallback, $timelimit;
-
+	
+	$username = "fleetrange";
+	$password = trim($port - 10000);
+	//If this is the troublesome 7209 videotry restarting it first
+	if ($_GET['port']==7209)
+	{
+	    //HTTP options
+	    $resetopts = array('http' =>
+	        array(
+	            'method'    => 'POST',
+	            'header'    => array ('Content-type: application/json', 'Authorization: Basic '.base64_encode("$username:$password")),
+	            'content' => '{"reset":"true"}'
+	        )
+	    );
+	    
+	    //Do request
+	    $reseturl= "http://localhost:28209/cgi-bin/restartVideo.sh";
+	    $context = stream_context_create($resetopts);
+	    $resetjson = file_get_contents($url, false, $context);
+	    
+	    
+	}
 	$fp = @fsockopen($host, $port, $errno, $errstr, 10);
 	//error_log(date('Y-m-d H:i:s')." stream: ".$host.",".$port.",".$errno." error ".$errstr."\n", 3, 'streamerror.log');
 	if ($fp) 
