@@ -198,7 +198,7 @@ function fresh() {
 	    
 	}
 	
-	if (false)//$_GET['port']==7209)
+	if ($_GET['port']==7209)
 	{
 	    $boundary="ffserver";
 	    //$host="3.93.199.138"; //using ubuntu proxy
