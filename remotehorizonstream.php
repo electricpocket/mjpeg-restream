@@ -33,7 +33,7 @@ $port = $_GET['port'] + 10000;//"17125";
 $url = "/?action=stream";
 
 $sonyrtsp=false;
-if ($_GET['port']==7156 || $_GET['port']==7190 || $_GET['port']==7191 || $_GET['port']==7192 || $_GET['port']==7193 || $_GET['port']==7186 || $_GET['port']==7209 ) 
+if ($_GET['port']==7156 || $_GET['port']==7185 || $_GET['port']==7186 || $_GET['port']==7190 || $_GET['port']==7191 || $_GET['port']==7192 || $_GET['port']==7193  || $_GET['port']==7209 ) 
 {
 	$sonyrtsp=true;//special case for sony cameras we use cvlc to read rtsp stream from 10.106.16.84/media/video2
 }
@@ -50,12 +50,13 @@ if ($sonyrtsp) //special case for sony cameras we use cvlc to read rtsp stream f
     $boundary = "7b3cc56e5f51db803f790dad720ed50a";
     
 }
-if ($_GET['port']==7185)
+if (false)//$_GET['port']==7185)
 {
     $url = "/cgi-bin/mjpeg?resolution=400x300";
     $boundary = "myboundary";
     //N.B. but they say boundary=--myboundary in the header unfortunately - which means we think the header is the start of a multipart as we are looking for --
 }
+
 $timelimit = 300; //number of seconds to run for
 $cameraOffset = 0; //horizontal angle camera is pointing
 $cameraUpsideDown = false; //is the camera mounted upside down
@@ -198,7 +199,7 @@ function fresh() {
 	    
 	}
 	
-	if ($_GET['port']==7209 || $_GET['port']==7156)
+	if ($_GET['port']==7209 || $_GET['port']==7156 || $_GET['port']==7185)
 	{
 	    //https://stackoverflow.com/questions/29699980/ffmpeg-restream-rtsp-to-mjpeg
 	    $boundary="ffserver";
