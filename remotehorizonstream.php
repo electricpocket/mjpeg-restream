@@ -198,7 +198,7 @@ function fresh() {
 	    
 	}
 	
-	if ($_GET['port']==7209)
+	if ($_GET['port']==7209 || $_GET['port']==7156)
 	{
 	    //https://stackoverflow.com/questions/29699980/ffmpeg-restream-rtsp-to-mjpeg
 	    $boundary="ffserver";
