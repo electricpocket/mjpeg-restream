@@ -162,7 +162,7 @@ function fresh() {
 	    
 	}
 	
-	if ($_GET['port']==7209 || $_GET['port']==7156 || $_GET['port']==7185) //using ffmpeg feed
+	if ($_GET['port']==7134 || $_GET['port']==7209 || $_GET['port']==7156 || $_GET['port']==7185 || $_GET['port']==7193)
 	{
 	    $boundary="ffserver";
 	    //$host="3.93.199.138"; //using ubuntu proxy
